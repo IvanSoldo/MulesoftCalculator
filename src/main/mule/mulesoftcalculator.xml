@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	<flow name="mulesoftcalculatorFlow" doc:id="77b57d4b-996b-40b0-b29c-4737a901644a" >
+		<http:listener doc:name="Listener" doc:id="c08c3772-ef1e-4988-ac70-1b73fb896f90" config-ref="HTTP_Listener_config" path="/calculate" allowedMethods="POST"/>
+		<ee:transform doc:name="executeCalculateMethod" doc:id="1e4bea6c-4279-4c21-8fb5-9fd75b4fcb54" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import java!utils::Calculator
+output application/json
+---
+Calculator::calculate(payload.operator,payload.numberOne,payload.numberTwo)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
